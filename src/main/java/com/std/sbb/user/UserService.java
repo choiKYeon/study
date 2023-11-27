@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Service
@@ -43,6 +44,14 @@ public class UserService implements UserDetailsService {
 
 
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
+    }
+    public SiteUser getUser(String username) throws DataFormatException {
+        Optional<SiteUser> siteUser = this.userRepository.findByusername(username);
+        if (siteUser.isPresent()) {
+            return siteUser.get();
+        } else {
+            throw new DataFormatException("siteuser not found");
+        }
     }
 }
 

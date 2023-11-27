@@ -1,6 +1,7 @@
 package com.std.sbb.Question;
 
 import com.std.sbb.DataNotException;
+import com.std.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,12 +38,12 @@ public class QuestionService {
         return this.questionRepository.findAll(pageable);
     }
 
-    public Question create(String subject, String content) {
+    public Question create(String subject, String content, SiteUser user) {
             Question q = new Question();
             q.setSubject(subject);
             q.setContent(content);
             q.setCreateDate(LocalDateTime.now());
-
+            q.setSiteUser(user);
             this.questionRepository.save(q);
             return q;
     }

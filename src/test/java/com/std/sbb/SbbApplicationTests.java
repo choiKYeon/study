@@ -102,7 +102,7 @@ class SbbApplicationTests {
 		for (int i = 1; i <= 300; i++) {
 			String subject = String.format("테스트 데이터입니다:[%03d]", i);
 			String content = "내용무";
-			this.questionService.create(subject, content);
+			this.questionService.create(subject, content, null);
 		}
 	}
 
@@ -110,6 +110,6 @@ class SbbApplicationTests {
 	@DisplayName("스트림 버전 데이터 밀어넣기")
 	void t012() {
 		IntStream.rangeClosed(3, 300)
-				.forEach(no -> questionService.create("테스트 제목입니다. %d".formatted(no), "테스트내용입니다. %d".formatted(no)));
+				.forEach(no -> questionService.create("테스트 제목입니다. %d".formatted(no), "테스트내용입니다. %d".formatted(no), null));
 	}
 }
