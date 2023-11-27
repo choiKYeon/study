@@ -1,6 +1,7 @@
 package com.std.sbb.Answer;
 
 import com.std.sbb.Question.Question;
+import com.std.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,4 +24,7 @@ public class Answer {
 
     @ManyToOne // 아래 처럼 다른 엔티티 클래스 리모콘을 저장할 때는 꼭 관계를 적어준다.
     private Question question;
+
+    @ManyToOne
+    private SiteUser siteUser;
 }

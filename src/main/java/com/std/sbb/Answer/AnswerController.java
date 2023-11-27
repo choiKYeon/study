@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/answer")
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class AnswerController {
 
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id,
-                               @Valid AnswerForm answerForm, BindingResult bindingResult) {
+                               @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
 
         //답변 부모 질문객체를 받아온다.
         Question q = this.questionService.getQuestion(id);

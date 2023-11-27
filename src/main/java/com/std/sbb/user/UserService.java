@@ -1,24 +1,34 @@
 package com.std.sbb.user;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserSecurityService implements UserDetailsService {
-
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public SiteUser create(String username, String email, String password) {
+        SiteUser user = new SiteUser();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        this.userRepository.save(user);
+        return user;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,12 +37,12 @@ public class UserSecurityService implements UserDetailsService {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
         SiteUser siteUser = _siteUser.get();
+
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if ("admin".equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
-        }
-        return new User(siteUser.getUserName(), siteUser.getPassword(), authorities);
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+
+        return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
     }
 }
+
